@@ -1,0 +1,24 @@
+.exchanger {
+    margin: 0 auto;
+    max-width: 700px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.83);
+    font-family: "Lato", sans-serif;
+    text-align: center;
+ }
+ .exchanger__legend {
+    text-align: left;
+    font-weight: bold;
+    font-size: large;
+ }
+ .exchanger__label--bold {
+   font-weight: bold;
+}
+ .exchanger__button {
+    margin: 10px auto;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px goldenrod;
+    cursor: pointer;
+ }
