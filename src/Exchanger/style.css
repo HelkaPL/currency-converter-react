@@ -19,6 +19,6 @@
     padding: 10px 20px;
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 1);
-    box-shadow: 0 0 10px goldenrod;
+    box-shadow: 0 0 10px rgb(218, 165, 32);
     cursor: pointer;
  }
