@@ -1,5 +1,6 @@
 import { useState } from "react";
-import "./style.css"
+import TimeClock from "./TimeClock";
+import "./style.css";
 
 const Exchanger = () => {
     const exchangeRates = [
@@ -62,6 +63,7 @@ const Exchanger = () => {
         >
             <fieldset>
                 <legend className="exchanger__legend">Oszacuj wartość swojej waluty</legend>
+                <TimeClock />
                 <p>
                     <label className="exchanger__label">
                         Posiadam walutę:
