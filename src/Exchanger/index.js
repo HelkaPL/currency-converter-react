@@ -2,8 +2,26 @@ import { useState } from "react";
 import "./style.css"
 
 const Exchanger = () => {
-    const ratioEUR = 4.71;
-    const ratioPLN = 1;
+    const exchangeRates = [
+        {
+            id: 1,
+            currencyName: "Polski Złoty",
+            currencyCode: "PLN",
+            ratio: 1
+        },
+        {
+            id: 2,
+            currencyName: "Euro",
+            currencyCode: "EUR",
+            ratio: 4.7160
+        },
+        {
+            id: 3,
+            currencyName: "Dolar Amerykański",
+            currencyCode: "USD",
+            ratio: 4.3258
+        },
+    ]
 
     const [inCurrency, setInputCurrency] = useState("1");
 
@@ -15,13 +33,20 @@ const Exchanger = () => {
 
     const [outCurrency, setOutputCurrency] = useState("1");
     
-    const onSelectOutputChange = ({ target }) => setOutputCurrency(target.value);
+    const onSelectOutputChange = ({ target }) => {
+        setOutputCurrency(target.value);
+        setOutputCurrencyCode(exchangeRates[target.options.selectedIndex].currencyCode);
+        setOutValue("?");
+    };
     
-    const [outValue, setOutValue] = useState("");
+    const [outValue, setOutValue] = useState("?");
+
+    const [outCurrencyCode, setOutputCurrencyCode] = useState("PLN");
+
 
     const calculateValue = (inRatio, inAmount, outRatio) => {
         const newOutValue = inAmount * (inRatio / outRatio);
-        setOutValue(newOutValue);
+        setOutValue(newOutValue.toFixed(2));
 
     };
 
@@ -39,10 +64,16 @@ const Exchanger = () => {
                 <legend className="exchanger__legend">Oszacuj wartość swojej waluty</legend>
                 <p>
                     <label className="exchanger__label">
-                        Posiadam walutę: 
+                        Posiadam walutę:
                         <select value={inCurrency} onChange={onSelectInputChange}>
-                            <option value={ratioEUR}>Euro (EUR)</option>
-                            <option value={ratioPLN}>Polski Złoty (PLN)</option>
+                        {exchangeRates.map(({ id, ratio, currencyCode, currencyName}) => (
+                            <option
+                              key={id}
+                              value={ratio}
+                            >
+                            {`${currencyName} (${currencyCode})`}
+                            </option>        
+                        ))}; 
                         </select>
                     </label>
                 </p>
@@ -62,23 +93,29 @@ const Exchanger = () => {
                     <label className="exchanger__label">
                         Chcę otrzymać: 
                         <select value={outCurrency} onChange={onSelectOutputChange}>
-                            <option value={ratioEUR}>Euro (EUR)</option>
-                            <option value={ratioPLN}>Polski Złoty (PLN)</option>
+                        {exchangeRates.map(({ id, ratio, currencyCode, currencyName}) => (
+                            <option
+                              key={id}
+                              value={ratio}
+                            >
+                            {`${currencyName} (${currencyCode})`}
+                            </option>        
+                        ))}; 
                         </select>
                     </label>
                 </p>
-                <p>Po sprawdzeniu kursów NBP <span className="js-exchangeRatio"></span></p>
+                <p>
+                <button className="exchanger__button">
+                    Sprawdz wartość !
+                </button>
+            </p>
+                <p>Po sprawdzeniu kursów NBP <span>na dzień 2023-01-30</span></p>
                 <p>
                     <label className="exchanger__label">
-                        wychodzi że otrzymasz: <span className="exchanger__label--bold">{outValue.toFixed(2)}</span> szt.
+                        wychodzi że otrzymasz: <span className="exchanger__label--bold">{`${outValue}`}</span> {outCurrencyCode}
                     </label>
                 </p>
             </fieldset>
-            <p>
-                <button className="exchanger__button">
-                    Przelicz !
-                </button>
-            </p>
         </form>
     )
 }
