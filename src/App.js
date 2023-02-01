@@ -3,10 +3,10 @@ import Header from "./Header";
 
 function App() {
   return (
-    <main>
+    <>
       <Header />
       <Exchanger />
-    </main>
+    </>
   );
 }
 
