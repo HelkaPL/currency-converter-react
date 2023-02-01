@@ -1,12 +1,12 @@
 import { useCurrentDate } from "./useCurrentDate";
-import "./style.css";
+import { Clock } from "./styled";
 
 const TimeClock = () => {
 
     const currentDate = useCurrentDate();
   
     return (
-        <p className="timeClock">
+        <Clock>
             Dziś jest:
             {" "}
             {currentDate.toLocaleString(undefined, {
@@ -18,7 +18,7 @@ const TimeClock = () => {
                 minute: "2-digit",
                 second: "2-digit",
             })}
-        </p>
+        </Clock>
     );
 };
 
