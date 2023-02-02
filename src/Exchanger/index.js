@@ -1,35 +1,10 @@
 import { useState, useEffect } from "react";
 import TimeClock from "./TimeClock";
+import { useExchangeData } from "./useExchangeData";
 import { Button, Fieldset, Label, Legend, Select, StyledForm } from "./styled";
 
 const Exchanger = () => {
-    const exchangeData = {
-        status: "success",
-        date: "2023-01-30",
-        ratios: [
-            {
-                currency: "Polski Złoty",
-                code: "PLN",
-                mid: 1
-            },
-            {
-                currency: "Euro",
-                code: "EUR",
-                mid: 4.7160
-            },
-            {
-                currency: "Dolar Amerykański",
-                code: "USD",
-                mid: 4.3258
-            },
-            {
-                currency: "Kumkwat Miedzyzjadliwy",
-                code: "KMZ",
-                mid: 44.3258
-            },
-        ],
-        
-    }
+   const exchangeData = useExchangeData();
     
     const [inCurrency, setInputCurrency] = useState("PLN");
     const [inAmount, setInAmount] = useState("0.00");
@@ -72,6 +47,20 @@ const Exchanger = () => {
                     Oszacuj wartość swojej waluty
                 </Legend>
                 <TimeClock />
+                {exchangeData.status === "loading"
+          ? (           
+            <p>
+            Trwa pobieranie danych z NBP...
+          </p>
+            )
+          : (
+            exchangeData.status === "error" ? (
+              <p>
+                Nastąpił błąd przy pobieraniu danych...<br/>
+                Sprawdź swoje połączenie z internetem, albo skontaktuj się z usługodawcą strony.
+              </p>
+            ) : (
+              <>             
                 <Label>
                     Posiadam walutę:
                     {" "}
@@ -127,6 +116,8 @@ const Exchanger = () => {
                     {" "}
                     {outCurrencyCode}
                 </Label>
+                </>
+            ))}
             </Fieldset>
         </StyledForm>
     )
