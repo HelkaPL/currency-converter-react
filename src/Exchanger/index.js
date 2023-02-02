@@ -103,7 +103,7 @@ const Exchanger = () => {
                 <Button>
                     Sprawdz wartość !
                 </Button>
-                <Label as="p">Po sprawdzeniu kursów NBP <span>na dzień 2023-01-30</span></Label>
+                <Label as="p">Po sprawdzeniu kursów NBP z dnia: <span>{exchangeData.date}</span></Label>
                 <Label>
                     wychodzi że otrzymasz:
                     <Label
