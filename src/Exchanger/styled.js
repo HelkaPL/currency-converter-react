@@ -13,7 +13,6 @@ export const Fieldset = styled.fieldset`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    
 `;
 
 export const Legend = styled.legend`
@@ -23,10 +22,15 @@ export const Legend = styled.legend`
 `;
 
 export const Label = styled.label`
-        margin: 5px;
+    margin: 5px;
+
     ${({ bold }) => bold && css`
         font-weight: bold;
     `}
+`;
+
+export const Select = styled.select`
+    margin-left: 5px;
 `;
 
 export const Button = styled.button`

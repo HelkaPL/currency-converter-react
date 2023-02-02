@@ -1,52 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TimeClock from "./TimeClock";
-import { Button, Fieldset, Label, Legend, StyledForm } from "./styled";
+import { Button, Fieldset, Label, Legend, Select, StyledForm } from "./styled";
 
 const Exchanger = () => {
-    const exchangeRates = [
-        {
-            id: 1,
-            currencyName: "Polski Złoty",
-            currencyCode: "PLN",
-            ratio: 1
-        },
-        {
-            id: 2,
-            currencyName: "Euro",
-            currencyCode: "EUR",
-            ratio: 4.7160
-        },
-        {
-            id: 3,
-            currencyName: "Dolar Amerykański",
-            currencyCode: "USD",
-            ratio: 4.3258
-        },
-    ]
-
-    const [inCurrency, setInputCurrency] = useState("1");
-
-    const onSelectInputChange = ({ target }) => setInputCurrency(target.value);
-
+    const exchangeData = {
+        status: "success",
+        date: "2023-01-30",
+        ratios: [
+            {
+                currency: "Polski Złoty",
+                code: "PLN",
+                mid: 1
+            },
+            {
+                currency: "Euro",
+                code: "EUR",
+                mid: 4.7160
+            },
+            {
+                currency: "Dolar Amerykański",
+                code: "USD",
+                mid: 4.3258
+            },
+            {
+                currency: "Kumkwat Miedzyzjadliwy",
+                code: "KMZ",
+                mid: 44.3258
+            },
+        ],
+        
+    }
+    
+    const [inCurrency, setInputCurrency] = useState("PLN");
     const [inAmount, setInAmount] = useState("0.00");
+    const [outCurrency, setOutputCurrency] = useState("PLN");
+    const [outValue, setOutValue] = useState("0.00");
+    const [outCurrencyCode, setOutputCurrencyCode] = useState("PLN");
 
+    
+    
+    const onSelectInputChange = ({ target }) => setInputCurrency(target.value);
     const onInAmountChange = ({ target }) => setInAmount(target.value);
 
-    const [outCurrency, setOutputCurrency] = useState("1");
 
     const onSelectOutputChange = ({ target }) => {
         setOutputCurrency(target.value);
-        setOutputCurrencyCode(exchangeRates[target.options.selectedIndex].currencyCode);
+        setOutputCurrencyCode(target.value);
         setOutValue("?");
     };
 
-    const [outValue, setOutValue] = useState("?");
-
-    const [outCurrencyCode, setOutputCurrencyCode] = useState("PLN");
 
 
-    const calculateValue = (inRatio, inAmount, outRatio) => {
-        const newOutValue = inAmount * (inRatio / outRatio);
+
+    const calculateValue = (inCurrency, inAmount, outCurrency) => {
+        const inRatio = exchangeData.ratios.find(({ code }) => code === inCurrency)
+        const outRatio = exchangeData.ratios.find(({ code }) => code === outCurrency)
+        const newOutValue = inAmount * (inRatio.mid / outRatio.mid);
         setOutValue(newOutValue.toFixed(2));
 
     };
@@ -66,16 +75,16 @@ const Exchanger = () => {
                 <Label>
                     Posiadam walutę:
                     {" "}
-                    <select value={inCurrency} onChange={onSelectInputChange}>
-                        {exchangeRates.map(({ id, ratio, currencyCode, currencyName }) => (
+                    <Select value={inCurrency} onChange={onSelectInputChange}>
+                        {exchangeData.ratios.map(({ currency, code }) => (
                             <option
-                                key={id}
-                                value={ratio}
+                                key={code}
+                                value={code}
                             >
-                                {`${currencyName} (${currencyCode})`}
+                                {`${currency} (${code})`}
                             </option>
                         ))}
-                    </select>
+                    </Select>
                 </Label>
                 <Label>
                     w ilości:
@@ -83,24 +92,24 @@ const Exchanger = () => {
                     <input
                         type="number"
                         value={inAmount}
-                        step="0.01"
-                        min="0"
+                        step="1"
+                        min="0.00"
                         onChange={onInAmountChange}
                     />
                 </Label>
                 <Label>
                     Chcę otrzymać:
                     {" "}
-                    <select value={outCurrency} onChange={onSelectOutputChange}>
-                        {exchangeRates.map(({ id, ratio, currencyCode, currencyName }) => (
+                    <Select value={outCurrency} onChange={onSelectOutputChange}>
+                    {exchangeData.ratios.map(({ currency, code }) => (
                             <option
-                                key={id}
-                                value={ratio}
+                                key={code}
+                                value={code}
                             >
-                                {`${currencyName} (${currencyCode})`}
+                                {`${currency} (${code})`}
                             </option>
                         ))}
-                    </select>
+                    </Select>
                 </Label>
                 <Button>
                     Sprawdz wartość !
